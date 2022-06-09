@@ -1,0 +1,2 @@
+class WrongEventName(Exception):
+    pass

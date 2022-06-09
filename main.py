@@ -1,8 +1,11 @@
-from configuration.utils import config
+from core.datastuctures import Event
+from keylogger.classes import Keylogger
+from output_formatter.classes import TextFormatter
+from timer.classes import Timer
 
 
 def main():
-    print(config)
+    pass
 
 
 if __name__ == '__main__':

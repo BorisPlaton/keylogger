@@ -1,1 +1,4 @@
-python-dotenv==0.20.0
+evdev==1.5.0
+pynput==1.7.6
+python-xlib==0.31
+six==1.16.0
