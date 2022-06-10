@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 if [ "$(ls | grep venv)" ]
 then
   . venv/bin/activate

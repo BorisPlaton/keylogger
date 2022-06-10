@@ -1,8 +1,8 @@
-from core.utils import build_project
+from core.utils import start_program
 
 
 def main():
-    build_project()
+    start_program()
 
 
 if __name__ == '__main__':

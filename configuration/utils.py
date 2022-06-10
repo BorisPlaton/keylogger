@@ -1,5 +1,10 @@
+from typing import NamedTuple
+
 from . import settings as st
 
+
+class KeyConfig(NamedTuple):
+    key: Key
 
 class Config:
 
