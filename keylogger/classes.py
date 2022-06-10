@@ -11,16 +11,12 @@ class Keylogger(EventHandler):
         self.keylogger_listener = Listener(on_release=self._key_pressed)
 
     def start_logging(self):
-        self.notify(Event.TIME_STARTED)
+        self.notify(Event.KEY_LOGGING_STARTED)
         with self.keylogger_listener as keylogger_listener:
             keylogger_listener.join()
 
-    def stop_logging(self):
-        self.keylogger_listener.stop()
-        self.notify(Event.TIME_STOPPED)
-
     def _key_pressed(self, key):
-        print(f'{key} release')
         if key == Key.f1:
-            self.notify(Event.TIME_STOPPED)
+            self.notify(Event.KEY_LOGGING_STOPPED)
             return False
+        data_storage.pressed_keys_quantity += 1
