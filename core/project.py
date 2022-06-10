@@ -1,6 +1,7 @@
 from core.events import Event
+from files.file_writer import FileWriter
 from keylogging.keyloggers import KeyboardLogger, MenuKeylogger
-from output_formatter.classes import OutputFormatter
+from output_formatter.output import OutputFormatter
 from time_handler.stopwatch import Stopwatch
 
 
@@ -16,10 +17,12 @@ class Project:
         self._keylogger = KeyboardLogger()
         self._timer = Stopwatch()
         self._output_formatter = OutputFormatter()
+        self._file_writer = FileWriter()
 
         self._create_event_relations()
 
     def start(self):
+        """Метод запуска проекта"""
         self._menu_keylogger.start_logging()
 
     @property
@@ -34,9 +37,13 @@ class Project:
         self._menu_keylogger.add_listener(self._output_formatter, Event.MENU_STARTED)
         self._menu_keylogger.add_listener(self._keylogger, Event.PROGRAM_STARTED)
 
-        self._keylogger.add_listener(self._timer, Event.KEY_LOGGING_STARTED)
         self._keylogger.add_listeners(
-            [self._timer, self._output_formatter, self._menu_keylogger], Event.KEY_LOGGING_STOPPED
+            [self._timer, self._output_formatter],
+            Event.KEY_LOGGING_STARTED,
+        )
+        self._keylogger.add_listeners(
+            [self._timer, self._output_formatter, self._file_writer, self._menu_keylogger],
+            Event.KEY_LOGGING_STOPPED,
         )
 
         self._timer.add_listener(self._output_formatter, Event.TIME_PASSED)

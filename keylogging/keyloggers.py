@@ -2,7 +2,7 @@ import threading
 
 from pynput.keyboard import Listener
 
-from configuration.utils import config
+from configuration.config import config
 from core.events import EventHandler, Event, EventListener
 from data_handler.classes import data_storage
 
@@ -27,7 +27,7 @@ class KeyboardLogger(AbstractKeylogger):
         self.notify(Event.KEY_LOGGING_STOPPED)
 
     def _key_pressed(self, key):
-        if key == config.STOP_KEY:
+        if key == config.STOP_KEY.key:
             return False
         data_storage.pressed_keys_quantity += 1
 
@@ -40,6 +40,7 @@ class MenuKeylogger(AbstractKeylogger):
         self.locker = threading.Lock()
 
     def start_logging(self):
+        self.notify(Event.MENU_STARTED)
         super().start_logging()
         if self.is_program_working():
             self.notify(Event.PROGRAM_STARTED)
@@ -55,9 +56,9 @@ class MenuKeylogger(AbstractKeylogger):
     def _key_pressed(self, key):
         match key:
             # Если нажата кнопка F1, запускается программа
-            case config.START_KEY:
+            case config.START_KEY.key:
                 return False
             # Если пользователь нажимает F2, программа заканчивает свою работу
-            case config.EXIT_KEY:
+            case config.EXIT_KEY.key:
                 self._is_active = False
                 return False
