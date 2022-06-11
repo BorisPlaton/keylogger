@@ -12,6 +12,10 @@ class FileWriter(EventListener):
         with open(self._get_result_file(), mode='a') as file:
             file.write(TextFormatter.get_formatted_keylogger_statistics())
 
+    def key_logging_stopped(self):
+        """Обработчик сигнала завершения мониторинга клавиатуры."""
+        self.write_keylogger_result_to_file()
+
     @staticmethod
     def _create_dir_if_doesnt_exist(path):
         pathlib.Path(path).mkdir(parents=True, exist_ok=True)
@@ -27,7 +31,3 @@ class FileWriter(EventListener):
 
         path /= data_storage.end_time.strftime('%d.txt')
         return path
-
-    def key_logging_stopped(self):
-        """Обработчик сигнала завершения мониторинга клавиатуры."""
-        self.write_keylogger_result_to_file()

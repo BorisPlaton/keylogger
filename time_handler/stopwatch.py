@@ -1,5 +1,5 @@
-import threading
 from datetime import datetime
+from typing import Optional
 
 from core.events import EventListener, EventHandler
 from data_handler.classes import data_storage
@@ -8,13 +8,16 @@ from data_handler.classes import data_storage
 class Stopwatch(EventHandler, EventListener):
     def __init__(self):
         super().__init__()
-        self.locker = threading.Lock()
-        self.time_passed = 0
+        self.start_time: Optional[datetime] = None
+        self.end_time: Optional[datetime] = None
 
     def key_logging_started(self):
         """Обработчик сигнала запуска мониторинга клавиатуры"""
-        data_storage.start_time = datetime.now()
+        self.start_time = datetime.now()
+        data_storage.start_time = self.start_time
 
     def key_logging_stopped(self):
         """Обработчик сигнала остановки мониторинга клавиатуры"""
-        data_storage.end_time = datetime.now()
+        self.end_time = datetime.now()
+        data_storage.end_time = self.end_time
+        data_storage.summary_time = self.end_time - self.start_time

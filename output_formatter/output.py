@@ -52,6 +52,7 @@ class TextFormatter(EventListener):
             END_TIME=TextFormatter._get_formatted_output_time(data_storage.end_time),
             DURATION=TextFormatter._get_formatted_duration_time(data_storage.duration_time),
             PRESSED_KEYS_QUANTITY=data_storage.pressed_keys_quantity,
+            SUMMARY_TIME_PASSED=TextFormatter._get_formatted_duration_time(data_storage.summary_time),
         )
         return text
 

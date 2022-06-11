@@ -26,7 +26,8 @@ MENU_TEXT = """
 
 KEYLOGGER_STATISTICS = """
 Количество нажатых клавиш: {PRESSED_KEYS_QUANTITY}
-Продолжительность: {DURATION}
+Всего пройденного времени: {SUMMARY_TIME_PASSED}
+Последний сеанс: {DURATION}
 Начало: {START_TIME}
 Конец: {END_TIME}
 """
