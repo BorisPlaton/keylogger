@@ -6,7 +6,9 @@ from .utils import KeyConfig
 
 class _Config:
     BASE_DIR: Path
-    RESULTS_DIR: Path
+    RESULT_DIR: Path
+
+    WRITE_TO_FILE: bool
 
     TIME_RANGE: int
 

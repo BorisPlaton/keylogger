@@ -1,7 +1,8 @@
+from configuration.config import config
 from core.events import Event
 from files.file_writer import FileWriter
 from keylogging.keyloggers import KeyboardLogger, MenuKeylogger
-from output_formatter.output import OutputFormatter
+from output_formatter.output import TextFormatter
 from time_handler.stopwatch import Stopwatch
 
 
@@ -16,7 +17,7 @@ class Project:
         self._menu_keylogger = MenuKeylogger()
         self._keylogger = KeyboardLogger()
         self._timer = Stopwatch()
-        self._output_formatter = OutputFormatter()
+        self._output_formatter = TextFormatter()
         self._file_writer = FileWriter()
 
         self._create_event_relations()
@@ -37,13 +38,15 @@ class Project:
         self._menu_keylogger.add_listener(self._output_formatter, Event.MENU_STARTED)
         self._menu_keylogger.add_listener(self._keylogger, Event.PROGRAM_STARTED)
 
-        self._keylogger.add_listeners(
-            [self._timer, self._output_formatter],
-            Event.KEY_LOGGING_STARTED,
-        )
-        self._keylogger.add_listeners(
-            [self._timer, self._output_formatter, self._file_writer, self._menu_keylogger],
-            Event.KEY_LOGGING_STOPPED,
-        )
+        self._create_key_logging_started_event_relations()
+        self._create_key_logging_stopped_event_relations()
 
-        self._timer.add_listener(self._output_formatter, Event.TIME_PASSED)
+    def _create_key_logging_stopped_event_relations(self):
+        listener_list = [self._timer, self._output_formatter, self._menu_keylogger]
+        if config.WRITE_TO_FILE:
+            listener_list.insert(2, self._file_writer)
+        self._keylogger.add_listeners(listener_list, Event.KEY_LOGGING_STOPPED)
+
+    def _create_key_logging_started_event_relations(self):
+        listener_list = [self._timer, self._output_formatter]
+        self._keylogger.add_listeners(listener_list, Event.KEY_LOGGING_STARTED)

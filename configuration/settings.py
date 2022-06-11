@@ -6,7 +6,8 @@ from configuration.utils import KeyConfig
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-RESULTS_DIR = None
+WRITE_TO_FILE = True
+RESULT_DIR = BASE_DIR / 'Results'
 TIME_RANGE = 60
 
 START_KEY = KeyConfig(Key.f1, 'F1')

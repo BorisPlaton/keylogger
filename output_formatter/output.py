@@ -6,35 +6,54 @@ from core.events import EventListener
 from data_handler.classes import data_storage
 
 
-class OutputFormatter(EventListener):
+class TextFormatter(EventListener):
 
     def __init__(self):
         self.locker = threading.RLock()
 
     def show_menu(self):
-        """Вывод меню для начала или прекращения работы программы."""
+        """Печатает меню программы."""
         with self.locker:
-            print(config.MENU_TEXT.format(
-                START_KEY=config.START_KEY.string_format,
-                EXIT_KEY=config.EXIT_KEY.string_format
-            ))
+            print(self.get_menu_text())
 
     def show_key_logging_help_text(self):
-        """Дополнительная информация, что выводится перед началом мониторинга клавиатуры."""
+        """Печатает дополнительную информация перед началом мониторинга клавиатуры."""
         with self.locker:
-            print(config.KEY_LOGGING_HELP_TEXT.format(
-                START_TIME=self._get_formatted_output_time(data_storage.start_time),
-                STOP_KEY=config.STOP_KEY.string_format
-            ))
+            print(self.get_formatted_keylogger_help_text())
 
     def show_keylogger_statistics(self):
+        """Печатает статистику мониторинга клавиатуры."""
         with self.locker:
-            print(config.KEYLOGGER_STATISTICS.format(
-                START_TIME=self._get_formatted_output_time(data_storage.start_time),
-                END_TIME=self._get_formatted_output_time(data_storage.end_time),
-                DURATION=self._get_formatted_duration_time(data_storage.duration_time),
-                PRESSED_KEYS_QUANTITY=data_storage.pressed_keys_quantity,
-            ))
+            print(self.get_formatted_keylogger_statistics())
+
+    @staticmethod
+    def get_menu_text() -> str:
+        """Возвращает отформатированную строку с меню программы."""
+        text = config.MENU_TEXT.format(
+            START_KEY=config.START_KEY.string_format,
+            EXIT_KEY=config.EXIT_KEY.string_format
+        )
+        return text
+
+    @staticmethod
+    def get_formatted_keylogger_help_text() -> str:
+        """Возвращает отформатированную строку с помощью по работе программы."""
+        text = config.KEY_LOGGING_HELP_TEXT.format(
+            START_TIME=TextFormatter._get_formatted_output_time(data_storage.start_time),
+            STOP_KEY=config.STOP_KEY.string_format,
+        )
+        return text
+
+    @staticmethod
+    def get_formatted_keylogger_statistics() -> str:
+        """Возвращает отформатированную строку с результатами выполнения программы."""
+        text = config.KEYLOGGER_STATISTICS.format(
+            START_TIME=TextFormatter._get_formatted_output_time(data_storage.start_time),
+            END_TIME=TextFormatter._get_formatted_output_time(data_storage.end_time),
+            DURATION=TextFormatter._get_formatted_duration_time(data_storage.duration_time),
+            PRESSED_KEYS_QUANTITY=data_storage.pressed_keys_quantity,
+        )
+        return text
 
     def key_logging_started(self):
         """Обработчик сигнала начала мониторинга клавиатуры."""
