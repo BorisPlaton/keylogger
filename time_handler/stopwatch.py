@@ -2,10 +2,12 @@ from datetime import datetime
 from typing import Optional
 
 from core.events import EventListener, EventHandler
-from data_handler.classes import data_storage
+from data_handler.storage import data_storage
 
 
 class Stopwatch(EventHandler, EventListener):
+    """Секундомер, для подсчета времени выполнения программы."""
+
     def __init__(self):
         super().__init__()
         self.start_time: Optional[datetime] = None
@@ -20,4 +22,4 @@ class Stopwatch(EventHandler, EventListener):
         """Обработчик сигнала остановки мониторинга клавиатуры"""
         self.end_time = datetime.now()
         data_storage.end_time = self.end_time
-        data_storage.summary_time = self.end_time - self.start_time
+        data_storage.summary_passed_time = self.end_time - self.start_time

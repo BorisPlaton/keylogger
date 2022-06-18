@@ -2,7 +2,7 @@ import pathlib
 
 from configuration.config import config
 from core.events import EventListener
-from data_handler.classes import data_storage
+from data_handler.storage import data_storage
 from output_formatter.output import TextFormatter
 
 
