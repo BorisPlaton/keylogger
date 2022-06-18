@@ -1,7 +1,7 @@
 from datetime import timedelta
 
+from data_handler.adds import WordsPerMinuteTypes, DataHandlerValues
 from data_handler.storage import data_storage as ds
-from output_formatter.adds import DataHandlerValues, WordsPerMinuteTypes
 
 
 def get_average_key_speed(time_range: timedelta, key_pressing_amount: int) -> float:
@@ -38,7 +38,7 @@ def get_data_from_data_handler() -> DataHandlerValues:
     last_session_pressed_keys_quantity = ds.last_session_pressed_keys_quantity
     last_session_passed_time = ds.time_passed
     last_session_average_key_speed = get_average_key_speed(
-            last_session_passed_time, last_session_pressed_keys_quantity)
+        last_session_passed_time, last_session_pressed_keys_quantity)
     summary_average_key_speed = get_average_key_speed(summary_passed_time, summary_pressed_keys_quantity)
 
     data = DataHandlerValues(

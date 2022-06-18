@@ -3,9 +3,10 @@ from datetime import datetime, timedelta
 
 from configuration.config import config
 from core.events import EventListener
+from data_handler.adds import DataHandlerValues, WPMDescription
 from data_handler.storage import data_storage
-from output_formatter.adds import DataHandlerValues, OutputFormattedData, WPMDescription
-from output_formatter.utils import get_data_from_data_handler
+from data_handler.utils import get_data_from_data_handler
+from output_formatter.adds import OutputFormattedData
 
 
 class TextFormatter(EventListener):
