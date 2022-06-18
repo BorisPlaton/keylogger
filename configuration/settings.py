@@ -17,8 +17,9 @@ EXIT_KEY = KeyConfig(Key.f2, 'F2')
 DATA_FORMAT = "%d %b, %H:%M"
 
 KEY_LOGGING_HELP_TEXT = """
-Начало работы: {START_TIME}
-{STOP_KEY} - Остановить запись
+Начало работы:
+ {START_TIME}
+ {STOP_KEY} - Остановить запись
 """
 
 MENU_TEXT = """
@@ -30,13 +31,17 @@ MENU_TEXT = """
 KEYLOGGER_STATISTICS = """
 Статистика:
  1. Общие данные
-    - Пройдено времени: {SUMMARY_TIME_PASSED}
+    - Прошло времени: {SUMMARY_TIME_PASSED}
     - Нажато клавиш: {SUMMARY_PRESSED_KEYS_QUANTITY} раз(a)
-    - Скорость набора: {SUMMARY_AVERAGE_KEY_SPEED} кл/мин
- 2. Последняя сессия 
-    - Пройдено времени: {LAST_SESSION_PASSED_PASSED}
+    - Скорость набора:
+        {SUMMARY_WPM}
+        {SUMMARY_AVERAGE_KEY_SPEED} кл/мин
+ 2. Последняя сессия
+    - Начало сессии: {START_TIME}
+    - Конец сессии: {END_TIME}
+    - Прошло времени: {LAST_SESSION_PASSED_PASSED}
     - Нажато клавиш: {LAST_SESSION_PRESSED_KEYS_QUANTITY} раз(a)
-    - Скорость набора: {LAST_SESSION_AVERAGE_KEY_SPEED} кл/мин
-    - Начало: {START_TIME}
-    - Конец: {END_TIME}
+    - Скорость набора:
+        {LAST_SESSION_WPM}
+        {LAST_SESSION_AVERAGE_KEY_SPEED} кл/мин
 """

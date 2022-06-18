@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 from configuration.config import config
 from core.events import EventListener
 from data_handler.storage import data_storage
-from output_formatter.adds import DataHandlerValues, OutputFormattedData
+from output_formatter.adds import DataHandlerValues, OutputFormattedData, WPMDescription
 from output_formatter.utils import get_data_from_data_handler
 
 
@@ -76,13 +76,20 @@ class TextFormatter(EventListener):
             SUMMARY_PRESSED_KEYS_QUANTITY=data_storage.summary_pressed_keys_quantity,
             SUMMARY_TIME_PASSED=TextFormatter.get_formatted_duration_time(data.summary_passed_time),
             SUMMARY_AVERAGE_KEY_SPEED="≈" + str(data.summary_average_key_speed),
+            SUMMARY_WPM=TextFormatter.get_formatted_wpm(data.summary_wpm.value),
             LAST_SESSION_AVERAGE_KEY_SPEED="≈" + str(data.last_session_average_key_speed),
             LAST_SESSION_PASSED_PASSED=TextFormatter.get_formatted_duration_time(data.last_session_passed_time),
             LAST_SESSION_PRESSED_KEYS_QUANTITY=str(data.last_session_pressed_keys_quantity),
+            LAST_SESSION_WPM=TextFormatter.get_formatted_wpm(data.last_session_wpm.value),
             START_TIME=TextFormatter.get_formatted_output_time(data.start_time),
             END_TIME=TextFormatter.get_formatted_output_time(data.end_time),
         )
         return formatted_output_data
+
+    @staticmethod
+    def get_formatted_wpm(wpm: WPMDescription):
+        formatted_wpm = ', '.join([wpm.words_per_minute, wpm.description])
+        return formatted_wpm
 
     def key_logging_started(self):
         """Обработчик сигнала начала мониторинга клавиатуры."""
