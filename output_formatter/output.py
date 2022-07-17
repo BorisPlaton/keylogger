@@ -1,18 +1,31 @@
 import threading
 from datetime import datetime, timedelta
+from typing import TypedDict
 
 from configuration.config import config
-from core.events import EventListener
 from data_handler.adds import DataHandlerValues, WPMDescription
 from data_handler.storage import data_storage
 from data_handler.utils import get_data_from_data_handler
-from output_formatter.adds import OutputFormattedData
 
 
-class TextFormatter(EventListener):
+class OutputFormattedData(TypedDict):
+    SUMMARY_PRESSED_KEYS_QUANTITY: str
+    SUMMARY_TIME_PASSED: str
+    SUMMARY_AVERAGE_KEY_SPEED: str
+    SUMMARY_WPM: str
+    LAST_SESSION_AVERAGE_KEY_SPEED: str
+    LAST_SESSION_PASSED_PASSED: str
+    LAST_SESSION_PRESSED_KEYS_QUANTITY: str
+    LAST_SESSION_WPM: str
+    START_TIME: str
+    END_TIME: str
+
+
+class TextFormatter:
     """Класс для вывода информации о работе программы в командную строку."""
 
     def __init__(self):
+        super().__init__()
         self.locker = threading.RLock()
 
     def show_menu(self):

@@ -1,9 +1,6 @@
-from core.utils import start_program
-
-
-def main():
-    start_program()
+from core.project import Project
 
 
 if __name__ == '__main__':
-    main()
+    project = Project()
+    project.start()

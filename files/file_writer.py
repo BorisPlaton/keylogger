@@ -1,12 +1,11 @@
 import pathlib
 
 from configuration.config import config
-from core.events import EventListener
 from data_handler.storage import data_storage
 from output_formatter.output import TextFormatter
 
 
-class FileWriter(EventListener):
+class FileWriter:
 
     def write_keylogger_result_to_file(self):
         with open(self._get_result_file(), mode='a') as file:

@@ -1,11 +1,10 @@
 from datetime import datetime
 from typing import Optional
 
-from core.events import EventListener, EventHandler
 from data_handler.storage import data_storage
 
 
-class Stopwatch(EventHandler, EventListener):
+class Stopwatch:
     """Секундомер, для подсчета времени выполнения программы."""
 
     def __init__(self):
