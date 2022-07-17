@@ -1,4 +1,4 @@
-from configuration.config import config
+from configuration.settings import settings
 from core.event_channels import Event, event_channel
 from files.file_writer import FileWriter
 from keylogging.keyloggers import KeyboardLogger, MenuKeylogger
@@ -24,7 +24,6 @@ class Project:
         self._timer = Stopwatch()
         self._output_formatter = TextFormatter()
         self._file_writer = FileWriter()
-
         self._create_event_relations()
 
     def start(self):
@@ -53,7 +52,7 @@ class Project:
                 self._output_formatter.key_logging_stopped,
                 self._menu_keylogger.key_logging_stopped,
             ]
-            if config.WRITE_TO_FILE else
+            if settings.WRITE_TO_FILE else
             [
                 self._timer.key_logging_stopped,
                 self._output_formatter.key_logging_stopped,

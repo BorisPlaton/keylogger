@@ -2,7 +2,7 @@ import threading
 from datetime import datetime, timedelta
 from typing import TypedDict
 
-from configuration.config import config
+from configuration.settings import settings
 from data_handler.adds import DataHandlerValues, WPMDescription
 from data_handler.storage import data_storage
 from data_handler.utils import get_data_from_data_handler
@@ -46,18 +46,18 @@ class TextFormatter:
     @staticmethod
     def get_menu_text() -> str:
         """Возвращает отформатированную строку с меню программы."""
-        text = config.MENU_TEXT.format(
-            START_KEY=config.START_KEY.string_format,
-            EXIT_KEY=config.EXIT_KEY.string_format
+        text = settings.MENU_TEXT.format(
+            START_KEY=settings.START_KEY.string_format,
+            EXIT_KEY=settings.EXIT_KEY.string_format
         )
         return text
 
     @staticmethod
     def get_formatted_keylogger_help_text() -> str:
         """Возвращает отформатированную строку с помощью по работе программы."""
-        text = config.KEY_LOGGING_HELP_TEXT.format(
+        text = settings.KEY_LOGGING_HELP_TEXT.format(
             START_TIME=TextFormatter.get_formatted_output_time(data_storage.start_time),
-            STOP_KEY=config.STOP_KEY.string_format,
+            STOP_KEY=settings.STOP_KEY.string_format,
         )
         return text
 
@@ -65,7 +65,7 @@ class TextFormatter:
     def get_formatted_keylogger_statistics() -> str:
         """Возвращает отформатированную строку с результатами выполнения программы."""
         formatted_data = TextFormatter.get_formatted_output_data(get_data_from_data_handler())
-        text = config.KEYLOGGER_STATISTICS.format(**formatted_data)
+        text = settings.KEYLOGGER_STATISTICS.format(**formatted_data)
         return text
 
     @staticmethod
@@ -80,7 +80,7 @@ class TextFormatter:
         Возвращает отформатированную строку для `datetime.datetime`.
         Формат времени задается в `configuration.settings.DATA_FORMAT`.
         """
-        formatted_time = time.strftime(config.DATA_FORMAT)
+        formatted_time = time.strftime(settings.DATA_FORMAT)
         return formatted_time
 
     @staticmethod

@@ -17,4 +17,4 @@ else
   pip install -r requirements.txt
 fi
 
-python3 main.py
+python3 keylogger/main.py

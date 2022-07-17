@@ -1,6 +1,6 @@
 from pynput.keyboard import Listener
 
-from configuration.config import config
+from configuration.settings import settings
 from core.event_channels import Event, event_channel
 from data_handler.storage import data_storage as ds
 
@@ -40,7 +40,7 @@ class KeyboardLogger(AbstractKeylogger):
         Считает количество нажатых клавиш. При нажатии клавиши `config.STOP_KEY.key`
         заканчивает подсчет и записывает количество нажатых клавши за последнюю сессию.
         """
-        if key == config.STOP_KEY.key:
+        if key == settings.STOP_KEY.key:
             ds.summary_pressed_keys_quantity += ds.last_session_pressed_keys_quantity
             return False
         ds.last_session_pressed_keys_quantity += 1
@@ -74,9 +74,9 @@ class MenuKeylogger(AbstractKeylogger):
     def _key_pressed(self, key):
         match key:
             # Если нажата кнопка F1, запускается программа
-            case config.START_KEY.key:
+            case settings.START_KEY.key:
                 return False
             # Если пользователь нажимает F2, программа заканчивает свою работу
-            case config.EXIT_KEY.key:
+            case settings.EXIT_KEY.key:
                 self._is_active = False
                 return False

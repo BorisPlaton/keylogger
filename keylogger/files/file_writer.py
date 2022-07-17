@@ -1,6 +1,6 @@
-import pathlib
+from pathlib import Path
 
-from configuration.config import config
+from configuration.settings import settings
 from data_handler.storage import data_storage
 from output_formatter.output import TextFormatter
 
@@ -17,12 +17,12 @@ class FileWriter:
 
     @staticmethod
     def _create_dir_if_doesnt_exist(path):
-        pathlib.Path(path).mkdir(parents=True, exist_ok=True)
+        Path(path).mkdir(parents=True, exist_ok=True)
 
     @staticmethod
-    def _get_result_file() -> str:
+    def _get_result_file() -> Path:
         path_to_file_list = ['%Y', '%m']
-        path = config.RESULT_DIR
+        path = settings.RESULT_DIR
 
         for directory in path_to_file_list:
             path /= data_storage.end_time.strftime(directory)

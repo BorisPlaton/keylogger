@@ -2,12 +2,12 @@ from pathlib import Path
 
 from pynput.keyboard import Key
 
-from configuration.adds import KeyConfig
+from configuration.settings import KeyConfig
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 WRITE_TO_FILE = True
-RESULT_DIR = BASE_DIR / 'RESULTS'
+RESULT_DIR = BASE_DIR.parent / 'RESULTS'
 TIME_RANGE = 60
 
 START_KEY = KeyConfig(Key.f1, 'F1')
