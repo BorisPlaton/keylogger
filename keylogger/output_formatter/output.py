@@ -3,9 +3,8 @@ from datetime import datetime, timedelta
 from typing import TypedDict
 
 from configuration.settings import settings
-from data_handler.adds import DataHandlerValues, WPMDescription
 from data_handler.storage import data_storage
-from data_handler.utils import get_data_from_data_handler
+from data_handler.utils import get_data_from_data_handler, DataHandlerValues, WPMDescription
 
 
 class OutputFormattedData(TypedDict):
