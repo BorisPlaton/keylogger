@@ -1,11 +1,11 @@
 from pynput.keyboard import Listener
 
 from configuration.config import config
-from core.events import EventHandler, Event, EventListener
+from core.event_channels import Event, event_channel
 from data_handler.storage import data_storage as ds
 
 
-class AbstractKeylogger(EventHandler, EventListener):
+class AbstractKeylogger:
     """Абстрактный класс за наблюдением нажатий клавиш."""
 
     def start_logging(self):
@@ -19,7 +19,6 @@ class AbstractKeylogger(EventHandler, EventListener):
         Абстрактный метод. Должен иметь условие выхода, которое при выполнении
         возвращает `False` для завершения наблюдения за клавиатурой.
         """
-        pass
 
 
 class KeyboardLogger(AbstractKeylogger):
@@ -27,9 +26,14 @@ class KeyboardLogger(AbstractKeylogger):
 
     def program_started(self):
         """Запускает мониторинг клавиатуры."""
-        self.notify(Event.KEY_LOGGING_STARTED)
+        self.clear_last_session_data()
+        event_channel.notify(Event.KEY_LOGGING_STARTED)
         self.start_logging()
-        self.notify(Event.KEY_LOGGING_STOPPED)
+        event_channel.notify(Event.KEY_LOGGING_STOPPED)
+
+    @staticmethod
+    def clear_last_session_data():
+        ds.last_session_pressed_keys_quantity = 0
 
     def _key_pressed(self, key):
         """
@@ -37,11 +41,9 @@ class KeyboardLogger(AbstractKeylogger):
         заканчивает подсчет и записывает количество нажатых клавши за последнюю сессию.
         """
         if key == config.STOP_KEY.key:
-            ds.last_session_pressed_keys_quantity = (
-                    ds.summary_pressed_keys_quantity - ds.last_session_pressed_keys_quantity
-            )
+            ds.summary_pressed_keys_quantity += ds.last_session_pressed_keys_quantity
             return False
-        ds.summary_pressed_keys_quantity += 1
+        ds.last_session_pressed_keys_quantity += 1
 
 
 class MenuKeylogger(AbstractKeylogger):
@@ -56,10 +58,10 @@ class MenuKeylogger(AbstractKeylogger):
 
     def start_logging(self):
         """Запускает мониторинг клавиатуры."""
-        self.notify(Event.MENU_STARTED)
+        event_channel.notify(Event.MENU_STARTED)
         super().start_logging()
         if self.is_program_working():
-            self.notify(Event.PROGRAM_STARTED)
+            event_channel.notify(Event.PROGRAM_STARTED)
 
     def key_logging_stopped(self):
         """Вызывается, если класс `Keylogger` перестал следить за клавиатурой."""

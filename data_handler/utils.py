@@ -11,6 +11,7 @@ def get_average_key_speed(time_range: timedelta, key_pressing_amount: int) -> fl
 
 
 def get_wpm(key_speed: float | int) -> WordsPerMinuteTypes:
+    """Анализирует скорость набора текста, и возвращает результат."""
     match key_speed:
         case key_speed if key_speed < 120:
             return WordsPerMinuteTypes.SLOW
