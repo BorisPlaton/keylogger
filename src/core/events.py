@@ -8,8 +8,8 @@ class Event(Enum):
     TIME_PASSED = 'time_passed'
     KEY_LOGGING_STOPPED = 'time_stopped'
     KEY_LOGGING_STARTED = 'time_started'
-    PROGRAM_STARTED = 'program_started'
-    MENU_STARTED = 'menu_started'
+    SHOW_STATISTICS = 'show_statistics'
+    SHOW_MENU = 'menu_started'
 
 
 def is_event_correct(func):

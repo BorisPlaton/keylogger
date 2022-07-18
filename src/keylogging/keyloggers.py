@@ -13,6 +13,10 @@ class AbstractKeylogger:
         listener = Listener(on_release=self._key_pressed)
         with listener:
             listener.join()
+        self.notify_user_choice()
+
+    def notify_user_choice(self):
+        """Делает действия, после мониторинга за клавиатурой."""
 
     def _key_pressed(self, key) -> bool:
         """
@@ -24,16 +28,32 @@ class AbstractKeylogger:
 class KeyboardLogger(AbstractKeylogger):
     """Следит за нажатиями по клавиатуре. Считает количество нажатых клавиш."""
 
-    def program_started(self):
+    def __init__(self):
+        self.stop_logging = False
+
+    def key_logging_started(self):
         """Запускает мониторинг клавиатуры."""
-        self.clear_last_session_data()
-        event_channel.notify(Event.KEY_LOGGING_STARTED)
+        self.reset_keys_quantity()
         self.start_logging()
-        event_channel.notify(Event.KEY_LOGGING_STOPPED)
 
     @staticmethod
-    def clear_last_session_data():
+    def reset_keys_quantity():
+        """Сбрасывает количество нажатых клавиш за последний сеанс."""
         ds.last_session_pressed_keys_quantity = 0
+
+    def notify_user_choice(self):
+        """Вызывает события, связанные с выбранной кнопкой."""
+        match True:
+            case self.stop_logging:
+                self.set_default_values()
+                event_channel.notify(Event.KEY_LOGGING_STOPPED)
+
+    def set_default_values(self):
+        """
+        Устанавливает значения выбора пользователя в начальную
+        позицию.
+        """
+        self.stop_logging = False
 
     def _key_pressed(self, key):
         """
@@ -42,6 +62,7 @@ class KeyboardLogger(AbstractKeylogger):
         """
         if key == settings.STOP_KEY.key:
             ds.summary_pressed_keys_quantity += ds.last_session_pressed_keys_quantity
+            self.stop_logging = True
             return False
         ds.last_session_pressed_keys_quantity += 1
 
@@ -54,29 +75,44 @@ class MenuKeylogger(AbstractKeylogger):
 
     def __init__(self):
         super().__init__()
-        self._is_active = True
+        self.start_key_logging = False
+        self.show_statistics = False
 
-    def start_logging(self):
+    def show_menu(self):
         """Запускает мониторинг клавиатуры."""
-        event_channel.notify(Event.MENU_STARTED)
-        super().start_logging()
-        if self.is_program_working():
-            event_channel.notify(Event.PROGRAM_STARTED)
-
-    def key_logging_stopped(self):
-        """Вызывается, если класс `Keylogger` перестал следить за клавиатурой."""
+        event_channel.notify(Event.SHOW_MENU)
         self.start_logging()
 
-    def is_program_working(self) -> bool:
-        """Возвращает булево значение, что показывает активна ли программа."""
-        return self._is_active
+    def key_logging_stopped(self):
+        """Вызывается, если класс `KeyboardLogger` перестал следить за клавиатурой."""
+        self.show_menu()
+
+    def set_default_values(self):
+        """
+        Устанавливает значения выбора пользователя в начальную
+        позицию.
+        """
+        self.start_key_logging = False
+        self.show_statistics = False
+
+    def notify_user_choice(self):
+        """Вызывает события, связанные с выбранной кнопкой."""
+        match True:
+            case self.start_key_logging:
+                self.set_default_values()
+                event_channel.notify(Event.KEY_LOGGING_STARTED)
+            case self.show_statistics:
+                self.set_default_values()
+                event_channel.notify(Event.SHOW_STATISTICS)
 
     def _key_pressed(self, key):
+        """Анализирует нажатую кнопку пользователем в меню программы."""
         match key:
-            # Если нажата кнопка F1, запускается программа
             case settings.START_KEY.key:
+                self.start_key_logging = True
                 return False
-            # Если пользователь нажимает F2, программа заканчивает свою работу
+            case settings.SHOW_RESULTS_KEY.key:
+                self.show_statistics = True
+                return False
             case settings.EXIT_KEY.key:
-                self._is_active = False
                 return False

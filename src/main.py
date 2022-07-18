@@ -1,4 +1,4 @@
-from core.project import Project
+from core.setup import Project
 
 
 if __name__ == '__main__':

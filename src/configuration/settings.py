@@ -19,6 +19,7 @@ class PyConfig:
     START_KEY: KeyConfig
     STOP_KEY: KeyConfig
     EXIT_KEY: KeyConfig
+    SHOW_RESULTS_KEY: KeyConfig
     DATA_FORMAT: str
     MENU_TEXT: str
     KEY_LOGGING_HELP_TEXT: str

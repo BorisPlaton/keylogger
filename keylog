@@ -1,12 +1,9 @@
 #!/usr/bin/env bash
 
-keylogger_dir_name="keylogger";
 
-if [[ ! $(pwd | grep -P $keylogger_dir_name) ]];
-then
-  keylogger_dir_path=$(find ~ -name $keylogger_dir_name)
-  cd "$keylogger_dir_path" || { echo Not found "$keylogger_dir_path"; exit; }
-fi
+keylogger_dir_path=$(find ~ -name keylogger | head -n 1)
+cd "$keylogger_dir_path" || { echo Not found "$keylogger_dir_path"; exit; }
+
 
 if [[ $(ls | grep venv) ]]
 then
@@ -17,4 +14,4 @@ else
   pip install -r requirements.txt
 fi
 
-python3 keylogger/main.py
+python3 src/main.py

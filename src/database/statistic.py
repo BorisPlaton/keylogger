@@ -49,3 +49,6 @@ class StatisticHandler:
             str(ds.start_time),
             str(ds.end_time),
         )
+
+
+statistic_db = StatisticHandler()
