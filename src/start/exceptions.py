@@ -1,0 +1,2 @@
+class WrongProgramTypeError(Exception):
+    pass

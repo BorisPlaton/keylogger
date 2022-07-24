@@ -31,7 +31,6 @@ class TextFormatter:
             text = settings.MENU_TEXT.format(
                 START_KEY=settings.START_KEY.string_format,
                 EXIT_KEY=settings.EXIT_KEY.string_format,
-                SHOW_RESULTS_KEY=settings.SHOW_RESULTS_KEY.string_format,
             )
             print(text)
 
@@ -59,9 +58,6 @@ class TextFormatter:
                 END_TIME=TextFormatter.get_formatted_output_time(data.end_time),
             )
             print(text)
-
-    def show_statistics(self):
-        print('Это тип статистика еси чо')
 
     @staticmethod
     def get_formatted_duration_time(duration_time: timedelta) -> str:

@@ -1,6 +1,6 @@
 from typing import Callable
 
-from core.events import is_event_correct, Event
+from events.events import is_event_correct, Event
 
 
 class BaseEventChannel:

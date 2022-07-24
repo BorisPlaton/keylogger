@@ -1,11 +1,12 @@
-from database.db import db
 from data_handler.storage import data_storage as ds
+from database.abs import BaseDB
 
 
-class Statistic:
+class Statistic(BaseDB):
 
     def create_table(self):
-        db.cursor.execute(
+        """Создает таблицу `statistic`."""
+        self.db.execute(
             """
             CREATE TABLE IF NOT EXISTS statistic (
                 id INTEGER PRIMARY KEY,
@@ -17,7 +18,8 @@ class Statistic:
         )
 
     def add_record(self, keys_quantity, start_time, end_time):
-        db.cursor.execute(
+        """Добавляет запись в таблицу."""
+        self.db.execute(
             """
             INSERT INTO statistic(keys_quantity, start_time, end_time) 
             VALUES (?, ?, ?);
@@ -26,7 +28,8 @@ class Statistic:
         )
 
     def get_records_by_time(self, record_date):
-        records_list = db.cursor.execute(
+        """Возвращает записи результатов за какую-то дату."""
+        records_list = self.db.conn.execute(
             """
             SELECT keys_quantity, start_time, end_time 
             FROM statistic
@@ -49,6 +52,3 @@ class StatisticHandler:
             str(ds.start_time),
             str(ds.end_time),
         )
-
-
-statistic_db = StatisticHandler()
