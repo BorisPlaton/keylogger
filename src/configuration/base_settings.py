@@ -11,12 +11,12 @@ TIME_RANGE = 60
 START_KEY = KeyConfig(Key.f1, 'F1')
 STOP_KEY = KeyConfig(Key.f1, 'F1')
 EXIT_KEY = KeyConfig(Key.f2, 'F2')
-SHOW_RESULTS_KEY = KeyConfig(Key.f3, 'F3')
+DB_LOCATION = BASE_DIR / 'keylog.db'
 
 DATA_FORMAT = "%d %b, %H:%M"
 
 KEY_LOGGING_HELP_TEXT = """
-Начало работы:
+Начало работы ({START_TIME}):
  `{STOP_KEY}` Остановить запись
 """
 
@@ -24,7 +24,6 @@ MENU_TEXT = """
 Меню:
  `{START_KEY}` Начать запись
  `{EXIT_KEY}` Завершение работы
- `{SHOW_RESULTS_KEY}` Показать ваши результаты
 """
 
 KEYLOGGER_STATISTICS = """

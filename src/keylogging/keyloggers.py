@@ -1,7 +1,7 @@
 from pynput.keyboard import Listener
 
 from configuration.settings import settings
-from core.event_channels import Event, event_channel
+from events.event_channels import Event, event_channel
 from data_handler.storage import data_storage as ds
 
 
@@ -110,9 +110,6 @@ class MenuKeylogger(AbstractKeylogger):
         match key:
             case settings.START_KEY.key:
                 self.start_key_logging = True
-                return False
-            case settings.SHOW_RESULTS_KEY.key:
-                self.show_statistics = True
                 return False
             case settings.EXIT_KEY.key:
                 return False
