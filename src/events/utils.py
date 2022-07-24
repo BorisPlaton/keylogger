@@ -1,15 +1,14 @@
-from enum import Enum
+from enum import Enum, auto
 from functools import wraps
 
 from events.exceptions import WrongEventName
 
 
 class Event(Enum):
-    TIME_PASSED = 'time_passed'
-    KEY_LOGGING_STOPPED = 'time_stopped'
-    KEY_LOGGING_STARTED = 'time_started'
-    SHOW_STATISTICS = 'show_statistics'
-    SHOW_MENU = 'menu_started'
+    KEY_LOGGING_STOPPED = auto()
+    KEY_LOGGING_STARTED = auto()
+    SHOW_STATISTICS = auto()
+    SHOW_MENU = auto()
 
 
 def is_event_correct(func):
