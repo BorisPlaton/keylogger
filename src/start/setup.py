@@ -1,7 +1,8 @@
 from enum import Enum, auto
 
-from database.statistic import StatisticHandler
-from events.event_channels import Event, event_channel
+from data_storage.handlers import KeylogDataHandler, StatisticHandler
+from data_storage.storages import KeylogData
+from events.event_channel import Event, EventChannel
 from keylogging.keyloggers import KeyboardLogger, MenuKeylogger
 from output_formatter.output import TextFormatter
 from start.exceptions import WrongProgramTypeError
@@ -29,9 +30,9 @@ class Keylog(BaseProgram):
 
     def _create_event_relations(self):
         """Устанавливает слушателей на события."""
-        event_channel.add_listener(Event.SHOW_MENU, self._output_formatter.show_menu)
+        self._event_chanel.add_listener(Event.SHOW_MENU, self._output_formatter.show_menu)
 
-        event_channel.add_listeners(
+        self._event_chanel.add_listeners(
             Event.KEY_LOGGING_STARTED,
             [
                 self._timer.key_logging_started,
@@ -40,7 +41,7 @@ class Keylog(BaseProgram):
             ]
         )
 
-        event_channel.add_listeners(
+        self._event_chanel.add_listeners(
             Event.KEY_LOGGING_STOPPED,
             [
                 self._timer.key_logging_stopped,
@@ -56,11 +57,14 @@ class Keylog(BaseProgram):
         программы. Также создает благодаря методу `Project._create_event_relations`
         необходимые связи событий между экземплярами классов.
         """
-        self._menu_keylogger = MenuKeylogger()
-        self._keyboard_keylogger = KeyboardLogger()
-        self._timer = Stopwatch()
+        self._event_chanel = EventChannel()
+        self._data_handler = KeylogDataHandler(KeylogData())
+
+        self._menu_keylogger = MenuKeylogger(self._event_chanel)
+        self._keyboard_keylogger = KeyboardLogger(self._event_chanel, self._data_handler.storage)
+        self._timer = Stopwatch(self._data_handler.storage)
         self._output_formatter = TextFormatter()
-        self._statistic_handler = StatisticHandler()
+        self._statistic_handler = StatisticHandler(self._data_handler.storage)
 
         self._create_event_relations()
 
@@ -82,9 +86,10 @@ class ProgramType(Enum):
 
 def get_program(program_type: ProgramType) -> type(BaseProgram):
     """Фабрика, возвращающая экземпляр класса для запуска программы."""
-    if program_type is ProgramType.KEYLOGGER:
-        return Keylog()
-    elif program_type is ProgramType.RESULTS:
-        return Results()
-    else:
-        raise WrongProgramTypeError("Неверный аргумент %s" % program_type)
+    match True:
+        case True if program_type is ProgramType.KEYLOGGER:
+            return Keylog()
+        case True if program_type is ProgramType.RESULTS:
+            return Results()
+        case _:
+            raise WrongProgramTypeError("Неверный аргумент %s" % program_type)

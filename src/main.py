@@ -10,7 +10,7 @@ def main():
     elif sys.argv[1] == 'results':
         program = get_program(ProgramType.RESULTS)
     else:
-        return print('Неправильный аргумент %s' % sys.argv[2])
+        return print('Неправильный аргумент %s' % sys.argv[1])
 
     program.start()
 
