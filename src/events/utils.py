@@ -13,8 +13,8 @@ class Event(Enum):
 
 def is_event_correct(func):
     """
-    Проверяет, что событие класса `start.events.Event` существует,
-    иначе вызывается исключение `start.exceptions.WrongEventName`
+    Проверяет, что событие класса `core.events.Event` существует,
+    иначе вызывается исключение `core.exceptions.WrongEventName`
     """
 
     @wraps(func)
