@@ -38,12 +38,8 @@ class KeyboardLogger(AbstractKeylogger):
 
     def key_logging_started(self):
         """Запускает мониторинг клавиатуры."""
-        self.reset_keys_quantity()
+        self.data_storage.reset_last_session_data()
         self.start_logging()
-
-    def reset_keys_quantity(self):
-        """Сбрасывает количество нажатых клавиш за последний сеанс."""
-        self.data_storage.last_session_pressed_keys_quantity = 0
 
     def notify_user_choice(self):
         """Вызывает события, связанные с выбранной кнопкой."""
@@ -65,9 +61,7 @@ class KeyboardLogger(AbstractKeylogger):
         заканчивает подсчет и записывает количество нажатых клавши за последнюю сессию.
         """
         if key == settings.STOP_KEY.key:
-            self.data_storage.summary_pressed_keys_quantity += (
-                self.data_storage.last_session_pressed_keys_quantity
-            )
+            self.data_storage.update_summary_pressed_keys_quantity()
             self.stop_logging = True
             return False
         self.data_storage.last_session_pressed_keys_quantity += 1

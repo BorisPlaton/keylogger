@@ -12,6 +12,7 @@ class BaseDB:
 
 
 class Statistic(BaseDB):
+    """Класс для работы с таблицей `statistic` в базе данных."""
 
     def create_table(self):
         """Создает таблицу `statistic`."""
@@ -30,17 +31,17 @@ class Statistic(BaseDB):
         """Добавляет запись статистики пользователя в таблицу."""
         self.db.execute(
             """
-            INSERT INTO statistic(keys_quantity, start_time, end_time) 
+            INSERT INTO statistic(keys_quantity, start_time, end_time)
             VALUES (?, ?, ?);
             """,
             [keys_quantity, start_time, end_time]
         )
 
-    def get_records_by_time(self, record_date):
+    def get_records_by_time(self, record_date: str | datetime):
         """Возвращает записи результатов за дату `record_date`."""
-        records_list = self.db.conn.execute(
+        records_list = self.db.execute(
             """
-            SELECT keys_quantity, start_time, end_time 
+            SELECT keys_quantity, start_time, end_time
             FROM statistic
             WHERE STRFTIME("%Y-%m-%d", start_time) = STRFTIME("%Y-%m-%d", ?)
             """,
@@ -49,48 +50,57 @@ class Statistic(BaseDB):
         return records_list.fetchall()
 
 
-class BaseKeylogData:
-    """
-    Хранилище статистики пользователя. Имеет только базовые поля
-    для хранения данных.
-    """
+class KeylogData:
+    """Хранилище статистики пользователя."""
+
     last_session_pressed_keys_quantity = 0
     summary_pressed_keys_quantity = 0
     summary_passed_time: timedelta | None = None
     start_time: datetime | None = None
     end_time: datetime | None = None
 
-
-class KeylogData(BaseKeylogData):
-    """
-    Класс, который отвечает за работу с `data_storage.storages.BaseKeylogData`.
-    Имеет методы, которые считают дополнительные данные.
-    """
-
     def update_summary_passed_time(self):
         """
-        Обновляет общее время выполнения работы. Для обновления данных,
-        должно быть время начала и время конца слежения за клавиатурой.
+        Обновляет общее время выполнения работы. Для обновления
+        данных, должно быть время начала и время конца слежения
+        за клавиатурой.
         """
-        if not (self.start_time and self.storage.end_time):
+        if not (self.start_time and self.end_time):
             return
-        if self.storage.summary_passed_time:
-            self.storage.summary_passed_time += self.last_session_time
+        if self.summary_passed_time:
+            self.summary_passed_time += self.last_session_time
         else:
-            self.storage.summary_passed_time = self.last_session_time
+            self.summary_passed_time = self.last_session_time
+
+    def update_summary_pressed_keys_quantity(self):
+        """
+        Добавляет данные по нажатиям клавиш за последнюю
+        сессию в данные за всё время выполнения работы.
+        """
+        self.summary_pressed_keys_quantity += self.last_session_pressed_keys_quantity
+
+    def reset_last_session_data(self):
+        """Обновляет данные за последнюю сессию."""
+        self.last_session_pressed_keys_quantity = 0
+
+    @staticmethod
+    def get_average_typing_speed(time_range: timedelta, key_pressing_amount: int) -> float:
+        """Считает примерную, среднюю скорость набора текста."""
+        minutes_amount = float("{:.2f}".format(time_range.total_seconds() / 60))
+        return float("{:.2f}".format(key_pressing_amount / minutes_amount))
 
     @property
     def last_session_time(self) -> timedelta | None:
         """Количество пройденного времени за последнюю сессию."""
-        if self.storage.start_time and self.storage.end_time:
-            return self.storage.end_time - self.storage.start_time
+        if self.start_time and self.end_time:
+            return self.end_time - self.start_time
 
     @property
     def last_session_typing_speed(self):
         """Возвращает скорость печати текста за последнюю сессию."""
-        return get_average_typing_speed(
+        return self.get_average_typing_speed(
             self.last_session_time,
-            self.storage.last_session_pressed_keys_quantity,
+            self.last_session_pressed_keys_quantity,
         )
 
     @property
@@ -99,7 +109,7 @@ class KeylogData(BaseKeylogData):
         Возвращает скорость печати текста за всё время работы
         программы.
         """
-        return get_average_typing_speed(
-            self.storage.summary_passed_time,
-            self.storage.summary_pressed_keys_quantity,
+        return self.get_average_typing_speed(
+            self.summary_passed_time,
+            self.summary_pressed_keys_quantity,
         )
