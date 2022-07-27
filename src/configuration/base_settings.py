@@ -21,32 +21,31 @@ DATA_FORMATS = {
 }
 
 KEY_LOGGING_HELP_TEXT = """
-{START_TIME}, Начало работы:
- `{STOP_KEY}` Остановить запись
+{START_TIME}, recording started:
+ `{STOP_KEY}` Stop
 """
 
 MENU_TEXT = """
-Меню:
- `{START_KEY}` Начать запись
- `{EXIT_KEY}` Завершение работы
+Menu:
+ `{START_KEY}` Start recording
+ `{EXIT_KEY}` Exit
 """
 
 KEYLOGGER_STATISTICS = """
-Статистика:
-  Общие данные:
-    - Прошло времени: {SUMMARY_TIME_PASSED}
-    - Нажато клавиш: {SUMMARY_PRESSED_KEYS_QUANTITY} раз(a)
-    - Скорость набора: {SUMMARY_AVERAGE_KEY_SPEED} кл/мин
-  Последняя сессия:
-    - Начало сессии: {SESSION_START_TIME}
-    - Конец сессии: {SESSION_END_TIME}
-    - Прошло времени: {LAST_SESSION_TIME_PASSED}
-    - Нажато клавиш: {LAST_SESSION_PRESSED_KEYS_QUANTITY} раз(a)
-    - Скорость набора: {LAST_SESSION_AVERAGE_KEY_SPEED} кл/мин
+Summary statistics:
+  - Time passed: {SUMMARY_TIME_PASSED}
+  - Keystrokes: {SUMMARY_PRESSED_KEYS_QUANTITY} times
+  - Typing speed: {SUMMARY_AVERAGE_KEY_SPEED} key/min
+Last session:
+  - Started at: {SESSION_START_TIME}
+  - Ended in: {SESSION_END_TIME}
+  - Time passed: {LAST_SESSION_TIME_PASSED}
+  - Keystrokes: {LAST_SESSION_PRESSED_KEYS_QUANTITY} times
+  - Typing speed: {LAST_SESSION_AVERAGE_KEY_SPEED} key/min
 """
 
 RESULT_STATISTICS = """{RESULT_DATE}:
-- Пройдено времени: {SUMMARY_TIME_PASSED}
-- Нажато клавиш: {SUMMARY_PRESSED_KEYS_QUANTITY} раз(a)
-- Скорость набора: {SUMMARY_AVERAGE_KEY_SPEED} кл/мин
+- Time passed: {SUMMARY_TIME_PASSED}
+- Keystrokes: {SUMMARY_PRESSED_KEYS_QUANTITY} times
+- Typing speed: {SUMMARY_AVERAGE_KEY_SPEED} key/min
 """

@@ -89,8 +89,10 @@ class ResultsOutput(BaseOutput):
             statistic_date = self.convert_input_date_to_datetime(statistic_date)
         except ValueError:
             return self.logger.info(
-                "`%s` неверный формат даты. "
-                "Проверьте совпадает ваше написание с форматом `YYYY-MM-DD`." % statistic_date
+                "`%s` is wrong date format. "
+                "Check if your spelling matches the `%s` format." % (
+                    statistic_date, settings.DATA_FORMATS['INPUT_DATE']
+                )
             )
 
         if statistics_list := self.data_storage.get_records_by_time(statistic_date):
@@ -101,7 +103,7 @@ class ResultsOutput(BaseOutput):
             )
         else:
             self.logger.info(
-                "Нет данных за %s." % convert_to_str_for('RESULT_DATE', statistic_date)
+                "No data for `%s`." % convert_to_str_for('RESULT_DATE', statistic_date)
             )
 
     def _show_summary_user_statistics(self, statistics_list: list, statistic_date):

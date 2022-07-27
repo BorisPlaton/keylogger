@@ -21,7 +21,7 @@ def get_parser() -> ArgumentParser:
     )
     arg_parser.add_argument(
         '-s', '--separate',
-        help="if -r option is provided, all result records will be separated;",
+        help="if -r option is provided, all result records will be shown separately;",
         action='store_false',
     )
     return arg_parser
