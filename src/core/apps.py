@@ -44,9 +44,8 @@ class Keylog:
 
     def __init__(self):
         """
-        Создает необходимые экземпляры классов для работы программы.
-        Также создает благодаря методу `Project._create_event_relations`
-        необходимые связи событий между экземплярами классов.
+        Создает необходимые экземпляры классов для работы программы и
+        связи между ними.
         """
         self._event_chanel = EventChannel()
         self._keylog_data = KeylogData()
@@ -66,8 +65,12 @@ class Results:
     нажатия клавиш.
     """
 
-    def show_user_results_for(self, results_date: str | datetime):
-        self._output_formatter.show_statistic_for_date(results_date)
+    def show_user_statistic_records(self, results_date: str | datetime, summary: bool = False):
+        """
+        Показывает все записи результатов пользователя
+        за дату `results_date`.
+        """
+        self._output_formatter.show_user_statistic_records(results_date, summary)
 
     def __init__(self):
         self._output_formatter = ResultsOutput(Statistic())

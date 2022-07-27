@@ -15,7 +15,7 @@ class EndpointsHandler:
         try:
             func = self.endpoints[endpoint]
         except KeyError:
-            raise KeyError("%s неверный endpoint." % endpoint)
+            raise KeyError("`%s` неверный endpoint." % endpoint)
         else:
             func(*args)
 

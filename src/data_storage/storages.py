@@ -37,7 +37,7 @@ class Statistic(BaseDB):
             [keys_quantity, start_time, end_time]
         )
 
-    def get_records_by_time(self, record_date: str | datetime):
+    def get_records_by_time(self, record_date: str | datetime) -> list[tuple[int, str, str]]:
         """Возвращает записи результатов за дату `record_date`."""
         records_list = self.db.execute(
             """
@@ -83,33 +83,8 @@ class KeylogData:
         """Обновляет данные за последнюю сессию."""
         self.last_session_pressed_keys_quantity = 0
 
-    @staticmethod
-    def get_average_typing_speed(time_range: timedelta, key_pressing_amount: int) -> float:
-        """Считает примерную, среднюю скорость набора текста."""
-        minutes_amount = float("{:.2f}".format(time_range.total_seconds() / 60))
-        return float("{:.2f}".format(key_pressing_amount / minutes_amount))
-
     @property
     def last_session_time(self) -> timedelta | None:
         """Количество пройденного времени за последнюю сессию."""
         if self.start_time and self.end_time:
             return self.end_time - self.start_time
-
-    @property
-    def last_session_typing_speed(self):
-        """Возвращает скорость печати текста за последнюю сессию."""
-        return self.get_average_typing_speed(
-            self.last_session_time,
-            self.last_session_pressed_keys_quantity,
-        )
-
-    @property
-    def average_typing_speed(self):
-        """
-        Возвращает скорость печати текста за всё время работы
-        программы.
-        """
-        return self.get_average_typing_speed(
-            self.summary_passed_time,
-            self.summary_pressed_keys_quantity,
-        )
