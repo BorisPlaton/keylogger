@@ -23,9 +23,8 @@ class PyConfig:
     MENU_TEXT: str
     KEY_LOGGING_HELP_TEXT: str
     KEYLOGGER_STATISTICS: str
-    TIME_RANGE: int
     DB_LOCATION: str | Path
-    WRITE_TO_FILE: bool
+    RESULT_STATISTICS: str
 
 
 settings: PyConfig | Settings = Settings()
