@@ -13,9 +13,9 @@ class StatisticHandler:
         данные записываются в таблицу `statistic`.
         """
         self.statistic_db.add_record(
-            self.storage.summary_pressed_keys_quantity,
-            str(self.storage.start_time),
-            str(self.storage.end_time),
+            self.storage.last_session_pressed_keys_quantity,
+            self.storage.start_time,
+            self.storage.end_time,
         )
 
     def __init__(self, storage: KeylogData):

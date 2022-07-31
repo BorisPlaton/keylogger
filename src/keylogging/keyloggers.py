@@ -1,8 +1,7 @@
-from pynput.keyboard import Listener
-
 from configuration.settings import settings
 from data_storage.storages import KeylogData
 from events.event_channel import Event, EventChannel
+from keylogging.listener import CustomKeyListener
 
 
 class AbstractKeylogger:
@@ -10,31 +9,43 @@ class AbstractKeylogger:
 
     def start_logging(self):
         """Начинает наблюдать за действиями клавиатуры."""
-        listener = Listener(on_release=self._key_pressed)
-        with listener:
-            listener.join()
+        self.listener = self.get_listener()
+        with self.listener:
+            try:
+                self.listener.join()
+            except ValueError:
+                pass
         self.notify_user_choice()
 
     def notify_user_choice(self):
         """Делает действия, после мониторинга за клавиатурой."""
+        raise NotImplementedError("You have to implement the `notify_user_choice` method.")
 
-    def _key_pressed(self, key) -> bool:
+    def get_hotkeys(self) -> dict:
         """
-        Абстрактный метод. Должен иметь условие выхода, которое при выполнении
-        возвращает `False` для завершения наблюдения за клавиатурой.
+        Возвращает словарь ключом которого являются горячие клавиши,
+        а значение callback функция.
         """
+        raise NotImplementedError("You have to implement the `get_hotkeys` method.")
+
+    def stop_listener(self):
+        """
+        Вызывается в дочерних классах, для остановки слежения
+        за клавиатурой.
+        """
+        self.listener.stop()
+
+    def get_listener(self, press_func=None, release_func=None, *args, **kwargs) -> CustomKeyListener:
+        """Возвращает экземпляр класса `CustomKeyListener`."""
+        return CustomKeyListener(self.get_hotkeys(), press_func, release_func, *args, **kwargs)
 
     def __init__(self, event_chanel: EventChannel):
         self.event_chanel = event_chanel
+        self.listener: CustomKeyListener | None = None
 
 
 class KeyboardLogger(AbstractKeylogger):
     """Следит за нажатиями по клавиатуре. Считает количество нажатых клавиш."""
-
-    def __init__(self, event_chanel, data_storage: KeylogData):
-        super().__init__(event_chanel)
-        self.data_storage = data_storage
-        self.stop_logging = False
 
     def key_logging_started(self):
         """Запускает мониторинг клавиатуры."""
@@ -55,16 +66,24 @@ class KeyboardLogger(AbstractKeylogger):
         """
         self.stop_logging = False
 
-    def _key_pressed(self, key):
-        """
-        Считает количество нажатых клавиш. При нажатии клавиши `config.STOP_KEY.key`
-        заканчивает подсчет и записывает количество нажатых клавши за последнюю сессию.
-        """
-        if key == settings.STOP_KEY.key:
-            self.data_storage.update_summary_pressed_keys_quantity()
-            self.stop_logging = True
-            return False
-        self.data_storage.last_session_pressed_keys_quantity += 1
+    def get_hotkeys(self) -> dict:
+        """Реализация абстрактного метода родительского класса."""
+        return {
+            settings.STOP_KEY.key: self.stop_logging_pressed
+        }
+
+    def stop_logging_pressed(self):
+        """Указывает, что запись завершена и останавливает слежение."""
+        self.stop_logging = True
+        self.stop_listener()
+
+    def get_listener(self, *args, **kwargs) -> CustomKeyListener:
+        return super().get_listener(lambda: self.data_storage.increment_last_session_keys_quantity())
+
+    def __init__(self, event_chanel, data_storage: KeylogData):
+        super().__init__(event_chanel)
+        self.data_storage = data_storage
+        self.stop_logging = False
 
 
 class MenuKeylogger(AbstractKeylogger):
@@ -88,7 +107,6 @@ class MenuKeylogger(AbstractKeylogger):
         позицию.
         """
         self.start_key_logging = False
-        self.show_statistics = False
 
     def notify_user_choice(self):
         """Вызывает события, связанные с выбранной кнопкой."""
@@ -96,18 +114,21 @@ class MenuKeylogger(AbstractKeylogger):
             case self.start_key_logging:
                 self.set_default_values()
                 self.event_chanel.notify(Event.KEY_LOGGING_STARTED)
-            case self.show_statistics:
-                self.set_default_values()
-                self.event_chanel.notify(Event.SHOW_STATISTICS)
 
-    def _key_pressed(self, key):
-        """Анализирует нажатую кнопку пользователем в меню программы."""
-        match key:
-            case settings.START_KEY.key:
-                self.start_key_logging = True
-                return False
-            case settings.EXIT_KEY.key:
-                return False
+    def get_hotkeys(self) -> dict:
+        """Реализация абстрактного метода родительского класса."""
+        return {
+            settings.START_KEY.key: self._start_keyboard_logger,
+            settings.EXIT_KEY.key: self.stop_listener,
+        }
+
+    def _start_keyboard_logger(self):
+        """
+        Устанавливает значение `self.start_key_logging` истинным,
+        и останавливает логгер.
+        """
+        self.start_key_logging = True
+        self.stop_listener()
 
     def __init__(self, event_chanel):
         super().__init__(event_chanel)

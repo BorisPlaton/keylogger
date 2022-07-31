@@ -7,7 +7,6 @@ from events.exceptions import WrongEventName
 class Event(Enum):
     KEY_LOGGING_STOPPED = auto()
     KEY_LOGGING_STARTED = auto()
-    SHOW_STATISTICS = auto()
     SHOW_MENU = auto()
 
 

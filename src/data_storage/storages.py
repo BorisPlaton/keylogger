@@ -83,6 +83,13 @@ class KeylogData:
         """Обновляет данные за последнюю сессию."""
         self.last_session_pressed_keys_quantity = 0
 
+    def increment_last_session_keys_quantity(self):
+        """
+        Увеличивает количество нажатых клавиш за последнюю сессию
+        на 1.
+        """
+        self.last_session_pressed_keys_quantity += 1
+
     @property
     def last_session_time(self) -> timedelta | None:
         """Количество пройденного времени за последнюю сессию."""

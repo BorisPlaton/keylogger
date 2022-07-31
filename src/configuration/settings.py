@@ -2,13 +2,11 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import NamedTuple
 
-from pynput.keyboard import Key
-
 from configuration.config import Settings
 
 
 class KeyConfig(NamedTuple):
-    key: Key
+    key: int | str
     string_format: str
 
 
