@@ -22,6 +22,7 @@ class PyConfig:
     KEY_LOGGING_HELP_TEXT: str
     KEYLOGGER_STATISTICS: str
     DB_LOCATION: str | Path
+    SUMMARY_RESULT_STATISTICS: str
     RESULT_STATISTICS: str
 
 

@@ -13,6 +13,7 @@ EXIT_KEY = KeyConfig('<ctrl>+x', 'ctrl + x')
 DB_LOCATION = BASE_DIR / 'keylog.db'
 
 DATA_FORMATS = {
+    'DB_FORMAT': '%Y-%m-%d %H:%M:%S.%f',
     'START_TIME': '%H:%M',
     'END_TIME': '%H:%M',
     'SESSION_START_TIME': '%d %B, %H:%M',
@@ -48,6 +49,12 @@ Last session:
 RESULT_STATISTICS = """{RESULT_DATE}:
 - Time range: {START_TIME} - {END_TIME}
 - Time passed: {SUMMARY_TIME_PASSED}
+- Keystrokes: {SUMMARY_PRESSED_KEYS_QUANTITY} times
+- Typing speed: {SUMMARY_AVERAGE_KEY_SPEED} key/min
+"""
+
+SUMMARY_RESULT_STATISTICS = """{RESULT_DATE}:
+- Summary time passed: {SUMMARY_TIME_PASSED}
 - Keystrokes: {SUMMARY_PRESSED_KEYS_QUANTITY} times
 - Typing speed: {SUMMARY_AVERAGE_KEY_SPEED} key/min
 """

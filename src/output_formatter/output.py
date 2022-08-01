@@ -1,13 +1,15 @@
 import logging
 from datetime import datetime
 
+from common.utils import from_str_to_datetime
 from configuration.settings import settings
 from data_storage.storages import KeylogData, Statistic
+from data_storage.utils import (
+    calculate_summary_user_statistics, calculate_user_statistics, get_average_typing_speed
+)
 from output_formatter.logger import OutputLogger
 from output_formatter.utils import (
-    get_formatted_duration_time, convert_to_str_for, get_average_typing_speed,
-    calculate_user_statistic, get_formatted_user_result, convert_to_datetime_for,
-    get_summary_user_statistic
+    get_formatted_duration_time, from_datetime_to_str, get_formatted_user_result
 )
 
 
@@ -36,7 +38,7 @@ class KeylogOutput(BaseOutput):
     def show_key_logging_help_text(self):
         """Печатает дополнительную информация перед началом мониторинга клавиатуры."""
         text = settings.KEY_LOGGING_HELP_TEXT.format(
-            START_TIME=convert_to_str_for(
+            START_TIME=from_datetime_to_str(
                 'START_TIME', self.data_storage.start_time
             ),
             STOP_KEY=settings.STOP_KEY.string_format,
@@ -58,8 +60,8 @@ class KeylogOutput(BaseOutput):
             )),
             LAST_SESSION_TIME_PASSED=get_formatted_duration_time(self.data_storage.last_session_time),
             LAST_SESSION_PRESSED_KEYS_QUANTITY=str(self.data_storage.last_session_pressed_keys_quantity),
-            SESSION_START_TIME=convert_to_str_for('SESSION_START_TIME', self.data_storage.start_time),
-            SESSION_END_TIME=convert_to_str_for('SESSION_END_TIME', self.data_storage.end_time),
+            SESSION_START_TIME=from_datetime_to_str('SESSION_START_TIME', self.data_storage.start_time),
+            SESSION_END_TIME=from_datetime_to_str('SESSION_END_TIME', self.data_storage.end_time),
         )
         self.logger.info(text)
 
@@ -103,14 +105,14 @@ class ResultsOutput(BaseOutput):
             )
         else:
             self.logger.info(
-                "No data for `%s`." % convert_to_str_for('RESULT_DATE', statistic_date)
+                "No data for `%s`." % from_datetime_to_str('RESULT_DATE', statistic_date)
             )
 
     def _show_summary_user_statistics(self, statistics_list: list, statistic_date):
         """Показывает общую статистику за день."""
-        summary_data = get_summary_user_statistic(statistics_list)
+        summary_data = calculate_summary_user_statistics(statistics_list)
         self.logger.info(
-            get_formatted_user_result(summary_data, statistic_date)
+            get_formatted_user_result(summary_data, statistic_date, True)
         )
 
     def _show_user_statistics_separately(self, statistics_list: list, statistic_date):
@@ -118,7 +120,7 @@ class ResultsOutput(BaseOutput):
         for amount, statistic in enumerate(statistics_list):
             self.logger.info(
                 f"{amount + 1}. " + get_formatted_user_result(
-                    calculate_user_statistic(statistic),
+                    calculate_user_statistics(statistic),
                     statistic_date
                 )
             )
@@ -127,15 +129,15 @@ class ResultsOutput(BaseOutput):
     def convert_input_date_to_datetime(statistic_date: str | datetime) -> datetime:
         """Преобразует данные из `statistic_date` типа `str` в тип `datetime`."""
         return (
-            convert_to_datetime_for('INPUT_DATE', statistic_date)
+            from_str_to_datetime('INPUT_DATE', statistic_date)
             if not isinstance(statistic_date, datetime)
             else statistic_date
         )
 
-    def __init__(self, data_storge: Statistic):
+    def __init__(self, data_storage: Statistic):
         """
-        Сохраняет хранилище данных, которое передаётся по аргументу
-        `data_storge`.
+        Сохраняет хранилище данных, которое передаётся аргументом
+        `data_storage`.
         """
         super().__init__()
-        self.data_storage = data_storge
+        self.data_storage = data_storage
