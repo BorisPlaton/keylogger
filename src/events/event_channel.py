@@ -40,7 +40,6 @@ class EventChannel:
     def __init__(self):
         """
         Инициализируется словарь, ключами которого есть события,
-        а значениями являются списки, со слушателями, что
-        наследуется от данного класса `EventChannel`.
+        а значениями являются списки со слушателями.
         """
         self.event_listeners: dict[Event, list[Callable]] = {event: [] for event in Event}

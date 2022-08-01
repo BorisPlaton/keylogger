@@ -12,16 +12,17 @@ class Event(Enum):
 
 def is_event_correct(func):
     """
-    Проверяет, что событие класса `core.events.Event` существует,
-    иначе вызывается исключение `core.exceptions.WrongEventName`
+    Проверяет, что событие класса `core.events.Event` переданы
+    аргументом в декорируемую функцию, иначе вызывается исключение
+    `core.exceptions.WrongEventName`
     """
 
     @wraps(func)
     def wrapper(*args, **kwargs):
         for arg in args + tuple(kwargs.values()):
-            if isinstance(arg, Event):
+            if isinstance(arg, Event) and arg in [event for event in Event]:
                 return func(*args, **kwargs)
         else:
-            raise WrongEventName("Неправильное название события")
+            raise WrongEventName(f"Can't find a argument with type `<enum 'Event'>` in {args}.")
 
     return wrapper

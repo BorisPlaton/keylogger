@@ -27,9 +27,9 @@ def get_parser() -> ArgumentParser:
     return arg_parser
 
 
-def get_arguments() -> ParserArguments:
+def get_arguments(arguments: str = '') -> ParserArguments:
     """Возвращает аргументы, которые были выбраны пользователем."""
-    args = get_parser().parse_args()
+    args = get_parser().parse_args(arguments.split())
     args_dict: ParserArguments = {
         'results': args.results,
         'separate': args.separate,

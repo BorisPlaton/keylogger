@@ -1,6 +1,9 @@
+.pytest_cache
 venv
 __pycache__
 .idea
 RESULTS
 keylogger.db
 keylog.db
+.coverage
+htmlcov

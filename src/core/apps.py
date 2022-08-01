@@ -8,7 +8,7 @@ from output_formatter.output import KeylogOutput, ResultsOutput
 from time_handler.stopwatch import Stopwatch
 
 
-class Keylog:
+class Keylogger:
     """
     Класс логирования нажатия клавиш. Создает все необходимые экземпляры
     классов и настраивает связи между ними. Имеет метод `core`, который
@@ -48,13 +48,13 @@ class Keylog:
         связи между ними.
         """
         self._event_chanel = EventChannel()
-        self._keylog_data = KeylogData()
+        self._keylogger_data = KeylogData()
 
         self._menu_keylogger = MenuKeylogger(self._event_chanel)
-        self._keyboard_keylogger = KeyboardLogger(self._event_chanel, self._keylog_data)
-        self._timer = Stopwatch(self._keylog_data)
-        self._output_formatter = KeylogOutput(self._keylog_data)
-        self._statistic_handler = StatisticHandler(self._keylog_data)
+        self._keyboard_keylogger = KeyboardLogger(self._event_chanel, self._keylogger_data)
+        self._timer = Stopwatch(self._keylogger_data)
+        self._output_formatter = KeylogOutput(self._keylogger_data)
+        self._statistic_handler = StatisticHandler(self._keylogger_data)
 
         self._create_event_relations()
 
