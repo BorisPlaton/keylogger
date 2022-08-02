@@ -27,7 +27,7 @@ def get_parser() -> ArgumentParser:
     return arg_parser
 
 
-def get_arguments(arguments: str | None = None) -> ParserArguments:
+def get_arguments(arguments: str = None) -> ParserArguments:
     """Возвращает аргументы, которые были выбраны пользователем."""
     args = get_parser().parse_args(arguments.split() if arguments else arguments)
     args_tuple = ParserArguments(

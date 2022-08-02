@@ -1,6 +1,6 @@
 from importlib import import_module
 
-from core.exceptions import ImproperlyConfiguredError
+from common.exceptions import ImproperlyConfiguredError
 
 
 class EndpointsHandler:
