@@ -1,11 +1,11 @@
 from argparse import ArgumentParser, RawTextHelpFormatter
 from datetime import datetime
-from typing import TypedDict
+from typing import NamedTuple
 
 from core.endpoints_handler import EndpointsHandler
 
 
-class ParserArguments(TypedDict):
+class ParserArguments(NamedTuple):
     results: str | datetime | None
     separate: bool
 
@@ -27,14 +27,14 @@ def get_parser() -> ArgumentParser:
     return arg_parser
 
 
-def get_arguments(arguments: str = '') -> ParserArguments:
+def get_arguments(arguments: str | None = None) -> ParserArguments:
     """Возвращает аргументы, которые были выбраны пользователем."""
-    args = get_parser().parse_args(arguments.split())
-    args_dict: ParserArguments = {
-        'results': args.results,
-        'separate': args.separate,
-    }
-    return args_dict
+    args = get_parser().parse_args(arguments.split() if arguments else arguments)
+    args_tuple = ParserArguments(
+        results=args.results,
+        separate=args.separate
+    )
+    return args_tuple
 
 
 def main():
@@ -44,7 +44,7 @@ def main():
     """
     handler = EndpointsHandler('core.endpoints')
     user_args = get_arguments()
-    if result_date := user_args['results']:
-        return handler.invoke('show_user_statistics', result_date, user_args['separate'])
+    if result_date := user_args.results:
+        return handler.invoke('show_user_statistics', result_date, user_args.separate)
     else:
         return handler.invoke('start_keylog')
