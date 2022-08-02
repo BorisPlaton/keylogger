@@ -1,13 +1,6 @@
 from datetime import datetime
-import pytest
 
-from data_storage.storages import KeylogData
 from time_handler.stopwatch import Stopwatch
-
-
-@pytest.fixture
-def keylog_data():
-    return KeylogData()
 
 
 def test_key_logging_started_event(keylog_data):

@@ -1,17 +1,6 @@
 import pytest
 
-from core.endpoints_handler import EndpointsHandler
-from core.exceptions import ImproperlyConfiguredError
-
-
-@pytest.fixture
-def endpoints_handler():
-    return EndpointsHandler()
-
-
-@pytest.fixture
-def endpoints_module():
-    return 'core.tests.source.endpoints_test'
+from common.exceptions import ImproperlyConfiguredError
 
 
 def test_handler_initialization(endpoints_handler, endpoints_module):

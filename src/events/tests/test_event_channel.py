@@ -1,12 +1,6 @@
 import pytest
 
-from events.event_channel import EventChannel
 from events.utils import Event
-
-
-@pytest.fixture
-def event_channel():
-    return EventChannel()
 
 
 @pytest.mark.parametrize(

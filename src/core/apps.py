@@ -4,6 +4,7 @@ from data_storage.handlers import StatisticHandler
 from data_storage.storages import KeylogData, Statistic
 from events.event_channel import Event, EventChannel
 from keylogging.keyloggers import KeyboardLogger, MenuKeylogger
+from keylogging.utils import get_keyboard_logger, get_menu_keylogger
 from output_formatter.output import KeylogOutput, ResultsOutput
 from time_handler.stopwatch import Stopwatch
 
@@ -50,8 +51,8 @@ class Keylogger:
         self._event_chanel = EventChannel()
         self._keylogger_data = KeylogData()
 
-        self._menu_keylogger = MenuKeylogger(self._event_chanel)
-        self._keyboard_keylogger = KeyboardLogger(self._event_chanel, self._keylogger_data)
+        self._menu_keylogger = get_menu_keylogger(self._event_chanel)
+        self._keyboard_keylogger = get_keyboard_logger(self._event_chanel, self._keylogger_data)
         self._timer = Stopwatch(self._keylogger_data)
         self._output_formatter = KeylogOutput(self._keylogger_data)
         self._statistic_handler = StatisticHandler(self._keylogger_data)
