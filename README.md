@@ -96,36 +96,42 @@ If you want to see a list of statistics rather than a summary data, you can pass
 ```
 $ ./main.py -r -s
 
-1. 28 July, 2022:
-- Time passed: 0:00:26
-- Keystrokes: 32 times
-- Typing speed: 71.77 key/min
+1. 01 August, 2022:
+- Time range: 00:39 - 00:39
+- Time passed: 0:00:08
+- Keystrokes: 0 times
+- Typing speed: 0.0 key/min
 
-2. 28 July, 2022:
-- Time passed: 0:00:04
-- Keystrokes: 32 times
-- Typing speed: 453.71 key/min
+2. 01 August, 2022:
+- Time range: 00:42 - 00:42
+- Time passed: 0:00:00
+- Keystrokes: 0 times
+- Typing speed: 0.0 key/min
 
-3. 28 July, 2022:
-- Time passed: 0:19:38
-- Keystrokes: 1189 times
-- Typing speed: 60.52 key/min
+3. 01 August, 2022:
+- Time range: 01:29 - 01:29
+- Time passed: 0:00:03
+- Keystrokes: 0 times
+- Typing speed: 0.0 key/min
 
-4. 28 July, 2022:
-- Time passed: 0:10:05
-- Keystrokes: 866 times
-- Typing speed: 85.82 key/min
+4. 01 August, 2022:
+- Time range: 01:36 - 01:36
+- Time passed: 0:00:02
+- Keystrokes: 6 times
+- Typing speed: 123.13 key/min
 ```
 With another date:
 ```
 $ ./main.py -r 2022-07-27 -s
 
 1. 27 July, 2022:
+- Time range: 01:00 - 01:01
 - Time passed: 0:00:06
 - Keystrokes: 11 times
 - Typing speed: 102.36 key/min
 
 2. 27 July, 2022:
+- Time range: 01:01 - 01:35
 - Time passed: 0:34:26
 - Keystrokes: 2134 times
 - Typing speed: 61.95 key/min
