@@ -8,7 +8,7 @@ from configuration.settings import KeyConfig
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 START_KEY = KeyConfig(Key.f1, 'F1')
-STOP_KEY = KeyConfig('<ctrl>+1', 'ctrl+1')
+STOP_KEY = KeyConfig(Key.f1, 'F1')
 EXIT_KEY = KeyConfig(Key.f2, 'F2')
 
 DB_LOCATION = BASE_DIR / 'keylog.db'

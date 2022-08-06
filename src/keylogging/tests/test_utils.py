@@ -25,7 +25,7 @@ def test_is_regular_key_with_wrong_values(key):
         Key.f1, Key.cmd, Key.alt_r
     ]
 )
-def test_is_regular_key_with_wrong_values(key):
+def test_is_regular_key_with_pynput_key_values(key):
     assert is_regular_key(key)
 
 
@@ -42,12 +42,8 @@ def test_menu_logger_factory(event_channel):
 
 
 def test_keyboard_logger_factory(event_channel, data_storage):
-    settings.START_KEY = KeyConfig('1', '')
-    settings.EXIT_KEY = KeyConfig('2', '')
+    settings.STOP_KEY = KeyConfig('1', '')
     keyboard_keylogger = get_keyboard_logger(event_channel, data_storage)
     assert isinstance(keyboard_keylogger, HotKeyKeyboardLogger)
-    settings.EXIT_KEY = KeyConfig(2, '')
-    with pytest.raises(ImproperlyConfiguredError):
-        get_menu_keylogger(event_channel)
-    settings.START_KEY = settings.EXIT_KEY = KeyConfig(Key.f1, '')
+    settings.STOP_KEY = KeyConfig(Key.f1, '')
     assert isinstance(get_keyboard_logger(event_channel, data_storage), KeyboardLogger)
