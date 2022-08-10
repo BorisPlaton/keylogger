@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from data_storage.storages import KeylogData
+from data.storages import KeylogData
 
 
 class Stopwatch:

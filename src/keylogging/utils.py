@@ -2,7 +2,7 @@ from pynput.keyboard import Key
 
 from common.exceptions import ImproperlyConfiguredError
 from configuration.settings import settings
-from data_storage.storages import KeylogData
+from data.storages import KeylogData
 from events.event_channel import EventChannel
 from keylogging.hot_keys_keyloggers import HotKeyKeyboardLogger, HotKeyMenuKeylogger
 from keylogging.keyloggers import KeyboardLogger, MenuKeylogger

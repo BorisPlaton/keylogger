@@ -1,6 +1,6 @@
 import pytest
 
-from data_storage.storages import KeylogData
+from data.storages import KeylogData
 
 
 @pytest.fixture

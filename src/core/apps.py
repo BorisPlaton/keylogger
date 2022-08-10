@@ -1,9 +1,8 @@
 from datetime import datetime
 
-from data_storage.handlers import StatisticHandler
-from data_storage.storages import KeylogData, Statistic
+from data.handlers import DataHandler
+from data.storages import KeylogData, Statistic
 from events.event_channel import Event, EventChannel
-from keylogging.keyloggers import KeyboardLogger, MenuKeylogger
 from keylogging.utils import get_keyboard_logger, get_menu_keylogger
 from output_formatter.output import KeylogOutput, ResultsOutput
 from time_handler.stopwatch import Stopwatch
@@ -37,8 +36,8 @@ class Keylogger:
             Event.KEY_LOGGING_STOPPED,
             [
                 self._timer.key_logging_stopped,
-                self._output_formatter.key_logging_stopped,
                 self._statistic_handler.key_logging_stopped,
+                self._output_formatter.key_logging_stopped,
                 self._menu_keylogger.key_logging_stopped,
             ]
         )
@@ -55,7 +54,7 @@ class Keylogger:
         self._keyboard_keylogger = get_keyboard_logger(self._event_chanel, self._keylogger_data)
         self._timer = Stopwatch(self._keylogger_data)
         self._output_formatter = KeylogOutput(self._keylogger_data)
-        self._statistic_handler = StatisticHandler(self._keylogger_data)
+        self._statistic_handler = DataHandler(self._keylogger_data)
 
         self._create_event_relations()
 

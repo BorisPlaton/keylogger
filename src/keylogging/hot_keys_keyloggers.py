@@ -10,11 +10,6 @@ class CustomKeyListener(GlobalHotKeys):
     базового класса `GlobalHotKeys`.
     """
 
-    def __init__(self, hotkeys, press_func=None, release_func=None, *args, **kwargs):
-        super().__init__(hotkeys, *args, **kwargs)
-        self.press_func = press_func
-        self.release_func = release_func
-
     def _on_press(self, key):
         """Вызывает перед родительским методом функцию `self.press_func`."""
         if self.press_func:
@@ -27,8 +22,17 @@ class CustomKeyListener(GlobalHotKeys):
             self.release_func()
         super()._on_release(key)
 
+    def __init__(self, hotkeys, press_func=None, release_func=None, *args, **kwargs):
+        super().__init__(hotkeys, *args, **kwargs)
+        self.press_func = press_func
+        self.release_func = release_func
+
 
 class HotKeyKeyboardLogger(KeyboardLogger):
+    """
+    Наследник класса `KeyboardLogger` для работы с горячими
+    клавишами, чем с `pynput.Key`.
+    """
 
     def get_listener(self, press_func=None, release_func=None) -> CustomKeyListener:
         """Возвращает экземпляр класса `CustomKeyListener`."""
@@ -45,6 +49,10 @@ class HotKeyKeyboardLogger(KeyboardLogger):
 
 
 class HotKeyMenuKeylogger(MenuKeylogger):
+    """
+    Наследник класса `MenuKeylogger` для работы с горячими
+    клавишами, чем с `pynput.Key`.
+    """
 
     def get_listener(self, press_func=None, release_func=None) -> CustomKeyListener:
         """Возвращает экземпляр класса `CustomKeyListener`."""

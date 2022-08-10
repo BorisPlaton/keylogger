@@ -3,8 +3,8 @@ from datetime import datetime
 
 from common.utils import from_str_to_datetime
 from configuration.settings import settings
-from data_storage.storages import KeylogData, Statistic
-from data_storage.utils import (
+from data.storages import KeylogData, Statistic
+from data.utils import (
     calculate_summary_user_statistics, calculate_user_statistics, get_average_typing_speed
 )
 from output_formatter.logger import OutputLogger
@@ -137,7 +137,7 @@ class ResultsOutput(BaseOutput):
     def __init__(self, data_storage: Statistic):
         """
         Сохраняет хранилище данных, которое передаётся аргументом
-        `data_storage`.
+        `data`.
         """
         super().__init__()
         self.data_storage = data_storage

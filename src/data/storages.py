@@ -1,7 +1,7 @@
 from datetime import timedelta, datetime
 
 from configuration.settings import settings
-from data_storage.connection import SQLConnection
+from data.connection import SQLConnection
 
 
 class BaseDB:

@@ -2,7 +2,7 @@ from datetime import timedelta
 
 from common.utils import from_datetime_to_str
 from configuration.settings import settings
-from data_storage.utils import UserStatistic
+from data.utils import UserStatistic
 
 
 def get_formatted_duration_time(duration_time: timedelta) -> str:

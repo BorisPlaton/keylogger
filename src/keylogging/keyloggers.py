@@ -1,7 +1,7 @@
 from pynput.keyboard import Listener
 
 from configuration.settings import settings
-from data_storage.storages import KeylogData
+from data.storages import KeylogData
 from events.event_channel import Event, EventChannel
 
 
@@ -68,10 +68,9 @@ class KeyboardLogger(AbstractKeylogger):
         количество нажатых клавши за последнюю сессию.
         """
         if key == settings.STOP_KEY.key:
-            self.data_storage.update_summary_pressed_keys_quantity()
             self.stop_logging = True
             return False
-        self.data_storage.last_session_pressed_keys_quantity += 1
+        self.data_storage.increment_last_session_keys_quantity()
 
     def __init__(self, event_chanel: EventChannel, data_storage: KeylogData):
         super().__init__(event_chanel)
